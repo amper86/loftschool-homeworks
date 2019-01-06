@@ -1,5 +1,6 @@
 import React, { Component} from 'react'
 import './Form.css'
+import bondImage from './assets/bond_approve.jpg'
 
 const formData = {
     firstname: {value: 'james', error: 'Имя указано не верно', errorEmpty: 'Нужно указать имя'},
@@ -10,7 +11,7 @@ const formData = {
 class Form extends Component {
     state = {
         errors: {},
-        onSubmit: false,
+        isValidate: false,
         values: {firstname: '', lastname: '', password: ''}
     };
 
@@ -40,11 +41,11 @@ class Form extends Component {
             }
         });
         //console.log(errors);
-        this.setState({errors: errors, onSubmit: Object.keys(errors).length === 0})
+        this.setState({errors: errors, isValidate: Object.keys(errors).length === 0})
     };
 
     render() {
-        if (!this.state.onSubmit) {
+        if (!this.state.isValidate) {
             return (
                 <div className='app-container'>
                     <form className='form' onSubmit={this.formLogin}>
@@ -95,7 +96,7 @@ class Form extends Component {
         } else {
             return (
                 <div className='app-container'>
-                    <img src={require('./assets/bond_approve.jpg')} alt='bond approve' className='t-bond-image'/>
+                    <img src={bondImage} alt='bond approve' className='t-bond-image'/>
                 </div>
             )
         }
