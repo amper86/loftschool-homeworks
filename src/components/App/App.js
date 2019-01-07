@@ -7,6 +7,8 @@ import bigBangImage from './assets/bigBang.jpg';
 import houseImage from './assets/house.jpg';
 import santaBarbaraImage from './assets/santaBarbara.jpg';
 
+import {getShowInfo} from '../../api';
+
 const radioGroup = [
   {
     name: 'House M.D.',
@@ -27,15 +29,19 @@ const radioGroup = [
 
 class App extends PureComponent {
   state = {
-    selectedShow: ''
+    selectedShow: '',
+    currentShow: {}
   };
 
   selectShow = event => {
-    this.setState({ selectedShow: event.target.value });
+    this.setState({ selectedShow: event.target.value }, () => {
+      const {selectedShow} = this.state;
+      getShowInfo(selectedShow).then(data => this.setState({currentShow: data}));
+    });
   };
 
   render() {
-    const { selectedShow } = this.state;
+    const { selectedShow, currentShow } = this.state;
 
     return (
       <div className="app">
@@ -67,7 +73,7 @@ class App extends PureComponent {
             </div>
           ))}
         </div>
-        <Show showId={selectedShow} />
+        <Show showId={selectedShow} currentShow={currentShow}/>
       </div>
     );
   }

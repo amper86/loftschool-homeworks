@@ -5,7 +5,9 @@ const showUrls = {
 };
 
 export const getShowInfo = showName => {
+  console.log(showName);
   const serialUrl = showUrls[showName];
+  console.log(serialUrl);
   if (serialUrl == null) {
     throw new Error(
       'The name of the show must be specified[house, santaBarbara, bigBang]'
