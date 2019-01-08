@@ -1,32 +1,57 @@
 import React, {Component} from 'react'
+import {getShowInfo} from '../../api';
 import './Show.css'
 
 class Show extends Component {
-    render() {
-        const {currentShow} = this.props;
-        //console.log(currentShow);
-        //console.log(currentShow.summary);
+  state = {
+    showId: '',
+    data: {}
+  };
 
-        if (Object.keys(currentShow).length === 0) {
-          return (<p className='show-information t-show-info'>Шоу не выбрано</p>)
-        } else {
-          return (
-            <div className='show'>
-              <img
-                className='show-image'
-                src={currentShow.image.medium}
-                alt={currentShow.name}/>
-              <h2 className='show-label t-show-name'>{currentShow.name}</h2>
-              <p className='show-text t-show-genre'>
-                <b>Жанр: </b>{currentShow.genres.join(', ')}
-              </p>
-              <p
-                className='show-text t-show-summary'
-                dangerouslySetInnerHTML={{ __html: currentShow.summary }}/>
-            </div>
-          )
-        }
+  static getDerivedStateFromProps(nextProp, prevState) {
+    if (prevState.showId !== nextProp.showId) {
+      return {
+        showId: nextProp.showId,
+        data: {}
+      }
+    } else {
+      return null;
     }
+  }
+
+  render() {
+    const {showId, data} = this.state;
+
+    if (!showId) {
+      return (<p className='show-information t-show-info'>Шоу не выбрано</p>)
+    } else if (Object.keys(data).length === 0) {
+      return (<p className='show-information t-show-info'>Загрузка!!!</p>)
+    } else {
+      return (
+        <div className='show'>
+          <img
+            className='show-image'
+            src={data.image.medium}
+            alt={data.name}/>
+          <h2 className='show-label t-show-name'>{data.name}</h2>
+          <p className='show-text t-show-genre'>
+            <b>Жанр: </b>{data.genres.join(', ')}
+          </p>
+          <p
+            className='show-text t-show-summary'
+            dangerouslySetInnerHTML={{ __html: data.summary }}/>
+        </div>
+      )
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.showId !== this.state.showId) {
+      getShowInfo(this.props.showId).then(res => {
+        this.setState({...this.state, data: res})
+      })
+    }
+  }
 }
 
 export default Show

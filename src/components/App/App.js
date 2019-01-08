@@ -1,13 +1,10 @@
 import React, { PureComponent } from 'react';
 import './App.css';
-
 import Show from '../Show';
 
 import bigBangImage from './assets/bigBang.jpg';
 import houseImage from './assets/house.jpg';
 import santaBarbaraImage from './assets/santaBarbara.jpg';
-
-import {getShowInfo} from '../../api';
 
 const radioGroup = [
   {
@@ -29,19 +26,15 @@ const radioGroup = [
 
 class App extends PureComponent {
   state = {
-    selectedShow: '',
-    currentShow: {}
+    selectedShow: ''
   };
 
   selectShow = event => {
-    this.setState({ selectedShow: event.target.value }, () => {
-      const {selectedShow} = this.state;
-      getShowInfo(selectedShow).then(data => this.setState({currentShow: data}));
-    });
+    this.setState({ selectedShow: event.target.value });
   };
 
   render() {
-    const { selectedShow, currentShow } = this.state;
+    const { selectedShow } = this.state;
 
     return (
       <div className="app">
@@ -73,7 +66,7 @@ class App extends PureComponent {
             </div>
           ))}
         </div>
-        <Show showId={selectedShow} currentShow={currentShow}/>
+        <Show showId={selectedShow}/>
       </div>
     );
   }
