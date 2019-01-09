@@ -19,6 +19,14 @@ class Show extends Component {
     }
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.showId !== this.state.showId) {
+      getShowInfo(this.state.showId).then(res => {
+        this.setState({...this.state, data: res})
+      })
+    }
+  }
+
   render() {
     const {showId, data} = this.state;
 
@@ -42,14 +50,6 @@ class Show extends Component {
             dangerouslySetInnerHTML={{ __html: data.summary }}/>
         </div>
       )
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.showId !== this.state.showId) {
-      getShowInfo(this.props.showId).then(res => {
-        this.setState({...this.state, data: res})
-      })
     }
   }
 }
