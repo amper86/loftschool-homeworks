@@ -15,7 +15,7 @@ class AuthProvider extends PureComponent {
   authorize = (email, password) => {
     if (this.validEmail !== email || this.validPassword !== password) {
       this.setState({authorizeError: 'Email или пароль введён не верно'});
-    } else if (this.validEmail === email || this.validPassword === password) {
+    } else {
       this.setState({email, isAuthorized: true, authorizeError: ''});
     }
   };
